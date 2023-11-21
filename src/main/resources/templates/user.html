@@ -1,11 +1,35 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <title>Spring Security Example</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+          crossorigin="anonymous">
 </head>
 <body>
-<h1>User, welcome spring boot security page!</h1>
+<h1>
+    Welcome spring boot security page,
+    <span th:text="${user.getUsername}"> </span>
+</h1>
+<table class="table">
+    <tr>
+        <th scope="col" class="h5">Your id</th>
+        <th scope="col" class="h5">Your lastname</th>
+        <th scope="col" class="h5">Your age</th>
+    </tr>
+    <tr>
+        <td><p th:text="${user.getId}" class="h6">VALUE</p></td>
+        <td><p th:text="${user.getLastName}" class="h6">VALUE</p></td>
+        <td><p th:text="${user.getAge}" class="h6">VALUE</p></td>
+    </tr>
+</table>
 
-
+<div class="text-center">
+    <a href="/logout">Выйти</a>
+</div>
+<div class="text-center">
+    <a href="/admin">Для администраторов</a>
+</div>
 </body>
 </html>
