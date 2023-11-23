@@ -49,7 +49,7 @@ public class AdminController {
 
 
     @GetMapping("/registration")
-    public String createForm(Model model, User user) {
+    public String createForm(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("roles", roleService.findAll());
         return "redirect:/admin";
@@ -69,7 +69,7 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @PatchMapping("/edit/{id}")
+    @PostMapping("/edit/{id}")
     public String updateUser(@ModelAttribute("user") User userUpdated, Model model) {
         userService.saveUser(userUpdated);
         return "redirect:/admin";
