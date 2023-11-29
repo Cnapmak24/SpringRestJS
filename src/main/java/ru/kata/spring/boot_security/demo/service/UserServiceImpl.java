@@ -1,82 +1,79 @@
 package ru.kata.spring.boot_security.demo.service;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.dao.UserRepository;
-import ru.kata.spring.boot_security.demo.model.Role;
+import ru.kata.spring.boot_security.demo.dao.UserDto;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl implements UserService, UserDetailsService {
+@Transactional(readOnly = true)
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder){
-        this.passwordEncoder=passwordEncoder;
-    }
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public User getUserByName(String name){
-        return userRepository.findByUsername(name);
+    public List<UserDto> findAll() {
+        return userRepository.findAll().stream()
+                .map(UserDto::new)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public User findById(Long id) {
+        Optional<User> foundUser = userRepository.findById(id);
+        return foundUser.orElse(null);
     }
 
+    @Override
     @Transactional
-    @Override
-    public void saveUser(User user) {
+    public void save(UserDto userDto) {
+        User user = new User(userDto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
-    @Transactional
     @Override
-    public void deleteUser(Long id) {
+    @Transactional
+    public void update(User userUpdate) {
+        User user = userRepository.getById(userUpdate.getId());
+        user.setFirstName(userUpdate.getFirstName());
+        user.setLastName(userUpdate.getLastName());
+        user.setAge(userUpdate.getAge());
+        user.setEmail(userUpdate.getEmail());
+        user.setRoles(userUpdate.getRoles());
+        if (!Objects.equals(user.getPassword(), userUpdate.getPassword())) {
+            user.setPassword(passwordEncoder.encode(userUpdate.getPassword()));
+        } else {
+            user.setPassword(userUpdate.getPassword());
+        }
+        userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
         userRepository.deleteById(id);
     }
 
     @Override
-    public User getUser(Long id) {
-        return userRepository.getReferenceById(id);
+    public User findByEmail(String email) {
+        Optional<User> foundUser = userRepository.findByEmail(email);
+        return foundUser.orElse(null);
     }
 
-    @Override
-    public User findByUsername(String username){
-        return userRepository.findByUsername(username);
-    }
-
-    @Transactional
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findByUsername(username);
-        if(user == null){
-            throw new UsernameNotFoundException(String.format("User '%s' not found", username));
-        }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
-    }
-
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
-        return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
-    }
 }

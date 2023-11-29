@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Users List</title>
+</head>
+<body>
+<!--Шапка-->
+<div class="container-fluid bg-dark">
+    <div class="row">
+        <div class="col text-white">
+            <h3 id = "login-roles"></h3>
+        </div>
+        <div class="col text-white-50">
+            <div class="p-2">
+                <h4 class="text-right">
+                    <a th:href="@{/logout}">
+                        <span class="align-content-end">Logout</span>
+                    </a>
+                </h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Контент-->
+<div class="container-fluid">
+    <div class="row">
+        <!--Левая панель-->
+        <div class="col-2">
+            <br/>
+            <ul class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <li id="admin-panel-left-tab"><a class="nav-link btn-lg" id="v-pills-admin-tab" data-toggle="pill" href="#adminPanel" role="tab" aria-controls="v-pills-admin" aria-selected="true">Admin</a></li>
+                <li><a class="nav-link btn-lg" id="userPanel-tab" data-toggle="pill" href="#userPanel" role="tab" aria-controls="userPanel" aria-selected="false">User</a></li>
+            </ul>
+        </div>
+        <!--Правая панель-->
+        <div class="col-10">
+
+
+            <div class="tab-content" id="v-pills-tabContent">
+                <!--админ-->
+                <div class="tab-pane fade show active" id="adminPanel"
+                     role="tabpanel" aria-labelledby="v-pills-admin-tab">
+
+                    <h1>Admin panel</h1>
+                    <!--вкладки -->
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="users_table-tab" data-toggle="tab" href="#userTable" role="tab" aria-controls="users_table" aria-selected="true">Users table</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="new_user-tab" data-toggle="tab" href="#newUser" role="tab" aria-controls="newUser" aria-selected="false">New user</a>
+                        </li>
+                    </ul>
+                    <!--содержание вкладок-->
+                    <div class="tab-content" id="myTabContent">
+
+                        <!--таблица юзеров-->
+                        <div class="tab-pane fade show active" id="userTable" role="tabpanel" aria-labelledby="home-tab">
+                            <h4>All users</h4>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Age</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                                </thead>
+                                <tbody id="table-users">
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--new user-->
+                        <div class="tab-pane fade" id="newUser" role="tabpanel" aria-labelledby="profile-tab">
+                            <h4>New user</h4>
+                            <div class="container-fluid bg-white">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <div class="col-5 text-center">
+                                        <form id="new-user-form">
+                                            <div class="form-group">
+                                                <label for="firstName"><b>First Name</b></label>
+                                                <input type="text" class="form-control" id="firstName" name="firstName">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="lastName"><b>Last Name</b></label>
+                                                <input type="text" class="form-control" id="lastName" name="lastName"/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="age"><b>Age</b></label>
+                                                <input type="number" class="form-control" id="age" name="age"/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email"><b>Email</b></label>
+                                                <input type="text" class="form-control" id="email" name="email"/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="password"><b>Password</b></label>
+                                                <input type="password" class="form-control" id="password" name="password"/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="select-for-roles"><b>Role</b></label>
+                                                <select multiple class="form-control form-control-sm" id="select-for-roles" name="roles" size="3" required>
+
+                                                </select>
+                                            </div>
+                                            <button type="submit" class="btn btn-success">Add new user</button>
+
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!--юзер-->
+                <div class="tab-pane" id="userPanel" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                    <h2>User information-page</h2>
+                    <div class="container-fluid border rounded">
+                        <h4>About user</h4>
+                        <table class="table table-striped border-top">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Age</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                        </tr>
+                        </thead>
+                        <tbody id="table-about-user"></tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script type="module" src="usersTable.js"></script>
+<script type="module" src="newUser.js"></script>
+
+</body>
+</html>
