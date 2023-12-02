@@ -51,13 +51,4 @@ public class UserRestController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    private User convertToUser(UserDto userDto){
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(userDto, User.class);
-    }
-
-    private UserDto convertToUserDto(User user){
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(user, UserDto.class);
-    }
 }

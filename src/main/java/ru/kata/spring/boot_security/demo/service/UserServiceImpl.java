@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.service;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void save(UserDto userDto) {
-        User user = new User(userDto);
+        User user = convertToUser(userDto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
@@ -73,6 +74,16 @@ public class UserServiceImpl implements UserService {
     public User findByEmail(String email) {
         Optional<User> foundUser = userRepository.findByEmail(email);
         return foundUser.orElse(null);
+    }
+
+    private static User convertToUser(UserDto userDto){
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(userDto, User.class);
+    }
+
+    private static UserDto convertToUserDto(User user){
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(user, UserDto.class);
     }
 
 }
