@@ -2,7 +2,7 @@ package ru.kata.spring.boot_security.demo.model;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.kata.spring.boot_security.demo.dao.UserDto;
+import ru.kata.spring.boot_security.demo.dto.UserDto;
 
 
 import javax.persistence.*;

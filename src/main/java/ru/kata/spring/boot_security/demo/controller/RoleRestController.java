@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.kata.spring.boot_security.demo.model.Role;
-import ru.kata.spring.boot_security.demo.service.RoleService;
+import ru.kata.spring.boot_security.demo.service.RoleServiceImpl;
 
 import java.util.List;
 
@@ -13,9 +13,9 @@ import java.util.List;
 @RestController
 public class RoleRestController {
 
-    private final RoleService roleService;
+    private final RoleServiceImpl roleService;
 
-    public RoleRestController(RoleService roleService) {
+    public RoleRestController(RoleServiceImpl roleService) {
         this.roleService = roleService;
     }
 

@@ -12,17 +12,15 @@ import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 import javax.transaction.Transactional;
 
 @Service
-public class PersonDetailsService implements UserDetailsService {
+public class UserDetailServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
 
-    @Autowired
-    public PersonDetailsService(UserRepository userRepository) {
+    public UserDetailServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Override
     @Transactional
-
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         Hibernate.initialize(user.getRoles());
